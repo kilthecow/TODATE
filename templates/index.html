@@ -3,52 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <title>TODATE</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>TODATE</h1>
+    <div class="app-container">
+        <!-- 왼쪽 패널 -->
+        <aside class="sidebar">
+            <div class="brand">
+                <img src="{{ url_for('static', filename='logo.png') }}" alt="TODATE 로고" class="logo-img">
+                <div>
+                    <h1>TODATE</h1>
+                    <p>TODATE</p>
+                </div>
+            </div>
 
-    <form method="GET" action="/">
-        <label for="date">날짜 선택:</label>
-        <input type="date" id="date" name="date" value="{{ selected_date }}">
-        <button type="submit">조회</button>
-    </form>
+            <div class="calendar-box">
+                <div class="calendar-header">
+                    <a class="month-btn" href="{{ url_for('index', month=prev_month_str, date=selected_date) }}">‹</a>
+                    <h2>{{ current_year }}년 {{ current_month }}월</h2>
+                    <a class="month-btn" href="{{ url_for('index', month=next_month_str, date=selected_date) }}">›</a>
+                </div>
 
-    <hr>
+                <div class="weekdays">
+                    <div>일</div>
+                    <div>월</div>
+                    <div>화</div>
+                    <div>수</div>
+                    <div>목</div>
+                    <div>금</div>
+                    <div>토</div>
+                </div>
 
-    {% if selected_date %}
-        <h2>{{ selected_date }} 할 일</h2>
+                <div class="calendar-grid">
+                    {% for week in calendar_data %}
+                        {% for day in week %}
+                            <a href="{{ url_for('index', date=day.date_str, month=current_month_str) }}"
+                               class="day-cell
+                               {% if not day.is_current_month %}other-month{% endif %}
+                               {% if day.is_today %}today{% endif %}
+                               {% if day.is_selected %}selected{% endif %}">
+                                {{ day.day }}
+                            </a>
+                        {% endfor %}
+                    {% endfor %}
+                </div>
+            </div>
+        </aside>
 
-        <form method="POST" action="/add">
-            <input type="hidden" name="todo_date" value="{{ selected_date }}">
-            <input type="text" name="content" placeholder="할 일을 입력하세요" required>
-            <button type="submit">추가</button>
-        </form>
+        <!-- 오른쪽 패널 -->
+        <main class="content">
+            <div class="todo-header">
+                <h2>{{ selected_date }} 할 일</h2>
+            </div>
 
-        <ul>
-            {% for todo in todos %}
-                <li>
-                    <form method="POST" action="/toggle/{{ todo[0] }}" style="display:inline;">
-                        <input type="hidden" name="todo_date" value="{{ selected_date }}">
-                        <button type="submit">
-                            {% if todo[2] == 1 %}☑{% else %}☐{% endif %}
-                        </button>
-                    </form>
+            <form method="POST" action="/add" class="todo-form">
+                <input type="hidden" name="todo_date" value="{{ selected_date }}">
+                <input type="text" name="content" placeholder="할 일을 입력하세요" required>
+                <button type="submit">추가</button>
+            </form>
 
-                    {% if todo[2] == 1 %}
-                        <s>{{ todo[1] }}</s>
-                    {% else %}
-                        {{ todo[1] }}
-                    {% endif %}
+            <div class="todo-list">
+                {% if todos %}
+                    {% for todo in todos %}
+                        <div class="todo-item">
+                            <form method="POST" action="/toggle/{{ todo['id'] }}">
+                                <input type="hidden" name="todo_date" value="{{ selected_date }}">
+                                <button type="submit" class="toggle-btn">
+                                    {% if todo['completed'] == 1 %}☑{% else %}☐{% endif %}
+                                </button>
+                            </form>
 
-                    <form method="POST" action="/delete/{{ todo[0] }}" style="display:inline;">
-                        <input type="hidden" name="todo_date" value="{{ selected_date }}">
-                        <button type="submit">삭제</button>
-                    </form>
-                </li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>먼저 날짜를 선택하세요.</p>
-    {% endif %}
+                            <div class="todo-text">
+                                {% if todo['completed'] == 1 %}
+                                    <span class="completed">{{ todo['content'] }}</span>
+                                {% else %}
+                                    <span>{{ todo['content'] }}</span>
+                                {% endif %}
+                            </div>
+
+                            <form method="POST" action="/delete/{{ todo['id'] }}">
+                                <input type="hidden" name="todo_date" value="{{ selected_date }}">
+                                <button type="submit" class="delete-btn">삭제</button>
+                            </form>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="empty-message">아직 할 일이 없습니다.</p>
+                {% endif %}
+            </div>
+        </main>
+    </div>
 </body>
 </html>
