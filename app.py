@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for
 import sqlite3
 import os
+import calendar
+from datetime import datetime
 
 app = Flask(__name__)
 DB_PATH = "todate.db"
@@ -32,12 +34,46 @@ def get_todos(todo_date):
     conn.close()
     return rows
 
+def get_month_calendar(year, month):
+    cal = calendar.Calendar(firstweekday=6)
+    month_days = cal.monthdayscalendar(year, month)
+    return month_days
 
 @app.route("/", methods=["GET"])
 def index():
-    selected_date = request.args.get("date", "")
+    today = datetime.today()
+
+    year = int(request.args.get("year", today.year))
+    month = int(request.args.get("month", today.month))
+    selected_date = request.args.get("date", f"{year:04d}-{month:02d}-{today.day:02d}")
+    
     todos = get_todos(selected_date) if selected_date else []
-    return render_template("index.html", selected_date=selected_date, todos=todos)
+    month_days = get_month_calendar(year, month)
+
+    prev_month = month - 1
+    prev_year = year
+    if prev_month == 0:
+        prev_month = 12
+        prev_year -= 1
+
+    next_month = month + 1
+    next_year = year
+    if next_month == 13:
+        next_month = 1
+        next_year += 1
+
+    return render_template(
+        "index.html", 
+        selected_date=selected_date, 
+        todos=todos,
+        year=year,
+        month=month,
+        month_days=month_days,
+        prev_year=prev_year,
+        prev_month=prev_month,
+        next_year=next_year,
+        next_month=next_month
+    )
 
 
 @app.route("/add", methods=["POST"])
@@ -55,7 +91,8 @@ def add():
         conn.commit()
         conn.close()
 
-    return redirect(url_for("index", date=todo_date))
+    year, month, _ = todo_date.split("-")
+    return redirect(url_for("index", date=todo_date, year=year, month=month))
 
 
 @app.route("/toggle/<int:todo_id>", methods=["POST"])
@@ -71,8 +108,9 @@ def toggle(todo_id):
     """, (todo_id,))
     conn.commit()
     conn.close()
-
-    return redirect(url_for("index", date=todo_date))
+    
+    year, month, _ = todo_date.split("-")
+    return redirect(url_for("index", date=todo_date, year=year, month=month))
 
 
 @app.route("/delete/<int:todo_id>", methods=["POST"])
@@ -85,8 +123,8 @@ def delete(todo_id):
     conn.commit()
     conn.close()
 
-    return redirect(url_for("index", date=todo_date))
-
+    year, month, _ = todo_date.split("-")
+    return redirect(url_for("index", date=todo_date, year=year, month=month))
 
 if __name__ == "__main__":
     init_db()
