@@ -8,8 +8,8 @@
     <h1>TODATE</h1>
 
     <form method="GET" action="/">
-        <label>날짜 선택:</label>
-        <input type="date" name="date" value="{{ selected_date }}">
+        <label for="date">날짜 선택:</label>
+        <input type="date" id="date" name="date" value="{{ selected_date }}">
         <button type="submit">조회</button>
     </form>
 
@@ -25,7 +25,7 @@
         </form>
 
         <ul>
-            {% for todo in todate %}
+            {% for todo in todos %}
                 <li>
                     <form method="POST" action="/toggle/{{ todo[0] }}" style="display:inline;">
                         <input type="hidden" name="todo_date" value="{{ selected_date }}">
