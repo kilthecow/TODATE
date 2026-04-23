@@ -65,7 +65,7 @@ def toggle(todo_id):
     conn = sqlite3.connect(DB_PATH)
     cur = conn.cursor()
     cur.execute("""
-        UPDATE todate
+        UPDATE todos
         SET done = CASE WHEN done = 0 THEN 1 ELSE 0 END
         WHERE id = ?
     """, (todo_id,))
