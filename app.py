@@ -5,7 +5,7 @@ import calendar
 from datetime import datetime, date
 
 app = Flask(__name__)
-DB_PATH = "todate.db"
+DB_PATH = os.getenv("DB_PATH", "todate.db")
 
 
 def get_db_connection():
