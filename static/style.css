@@ -18,6 +18,7 @@ body {
 /* 왼쪽 */
 .sidebar {
     width: 380px;
+    min-width: 380px;
     background: #ffffff;
     border-right: 1px solid #e5e7eb;
     padding: 24px;
@@ -34,6 +35,7 @@ body {
     width: 52px;
     height: 52px;
     object-fit: contain;
+    flex-shrink: 0;
 }
 
 .brand h1 {
@@ -58,10 +60,13 @@ body {
     align-items: center;
     justify-content: space-between;
     margin-bottom: 18px;
+    gap: 10px;
 }
 
 .calendar-header h2 {
     font-size: 20px;
+    text-align: center;
+    flex: 1;
 }
 
 .month-btn {
@@ -75,6 +80,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
 }
 
 .weekdays,
@@ -91,6 +97,10 @@ body {
     color: #666;
 }
 
+.weekdays div {
+    padding: 6px 0;
+}
+
 .day-cell {
     text-decoration: none;
     color: #222;
@@ -102,6 +112,7 @@ body {
     align-items: center;
     justify-content: center;
     transition: 0.15s;
+    font-size: 14px;
 }
 
 .day-cell:hover {
@@ -129,6 +140,7 @@ body {
 .content {
     flex: 1;
     padding: 36px;
+    min-width: 0;
 }
 
 .todo-header {
@@ -181,6 +193,7 @@ body {
 .todo-text {
     flex: 1;
     font-size: 16px;
+    word-break: break-word;
 }
 
 .completed {

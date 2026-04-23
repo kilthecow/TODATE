@@ -7,13 +7,12 @@
 </head>
 <body>
     <div class="app-container">
-        <!-- 왼쪽 패널 -->
         <aside class="sidebar">
             <div class="brand">
                 <img src="{{ url_for('static', filename='logo.png') }}" alt="TODATE 로고" class="logo-img">
                 <div>
                     <h1>TODATE</h1>
-                    <p>TODATE</p>
+                    <p>Do To Do with TODATE!</p>
                 </div>
             </div>
 
@@ -37,11 +36,8 @@
                 <div class="calendar-grid">
                     {% for week in calendar_data %}
                         {% for day in week %}
-                            <a href="{{ url_for('index', date=day.date_str, month=current_month_str) }}"
-                               class="day-cell
-                               {% if not day.is_current_month %}other-month{% endif %}
-                               {% if day.is_today %}today{% endif %}
-                               {% if day.is_selected %}selected{% endif %}">
+                            <a href="{{ url_for('index', date=day.date_str, month=day.date_str[:7]) }}"
+                               class="day-cell{% if not day.is_current_month %} other-month{% endif %}{% if day.is_today %} today{% endif %}{% if day.is_selected %} selected{% endif %}">
                                 {{ day.day }}
                             </a>
                         {% endfor %}
@@ -50,13 +46,12 @@
             </div>
         </aside>
 
-        <!-- 오른쪽 패널 -->
         <main class="content">
             <div class="todo-header">
                 <h2>{{ selected_date }} 할 일</h2>
             </div>
 
-            <form method="POST" action="/add" class="todo-form">
+            <form method="POST" action="{{ url_for('add') }}" class="todo-form">
                 <input type="hidden" name="todo_date" value="{{ selected_date }}">
                 <input type="text" name="content" placeholder="할 일을 입력하세요" required>
                 <button type="submit">추가</button>
@@ -66,22 +61,22 @@
                 {% if todos %}
                     {% for todo in todos %}
                         <div class="todo-item">
-                            <form method="POST" action="/toggle/{{ todo['id'] }}">
+                            <form method="POST" action="{{ url_for('toggle', todo_id=todo['id']) }}">
                                 <input type="hidden" name="todo_date" value="{{ selected_date }}">
                                 <button type="submit" class="toggle-btn">
-                                    {% if todo['completed'] == 1 %}☑{% else %}☐{% endif %}
+                                    {% if todo['done'] == 1 %}☑{% else %}☐{% endif %}
                                 </button>
                             </form>
 
                             <div class="todo-text">
-                                {% if todo['completed'] == 1 %}
+                                {% if todo['done'] == 1 %}
                                     <span class="completed">{{ todo['content'] }}</span>
                                 {% else %}
                                     <span>{{ todo['content'] }}</span>
                                 {% endif %}
                             </div>
 
-                            <form method="POST" action="/delete/{{ todo['id'] }}">
+                            <form method="POST" action="{{ url_for('delete', todo_id=todo['id']) }}">
                                 <input type="hidden" name="todo_date" value="{{ selected_date }}">
                                 <button type="submit" class="delete-btn">삭제</button>
                             </form>
