@@ -15,6 +15,7 @@ MODEL_PATH = os.path.join(BASE_DIR, "model.pkl")
 
 
 def train():
+
     df = pd.read_csv(DATA_PATH)
 
     x = df["content"]
@@ -25,11 +26,18 @@ def train():
         ("classifier", LogisticRegression(max_iter=1000))
     ])
 
-    model.fit(x, y)
+    mlflow.set_tracking_uri("file:./mlruns")
+    mlflow.set_experiment("todo-priority-classification")
 
-    joblib.dump(model, MODEL_PATH)
+    with mlflow.start_run():
 
-    print("모델 학습 완료:", MODEL_PATH)
+        model.fit(x, y)
+
+        joblib.dump(model, MODEL_PATH)
+
+        mlflow.log_param("model_type", "LogisticRegression")
+
+        print("학습 완료")
 
 
 if __name__ == "__main__":
