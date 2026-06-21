@@ -90,3 +90,16 @@ def test_delete_존재하지_않는_id(client):
     """존재하지 않는 id 삭제 → 오류 없이 리다이렉트"""
     res = client.post("/delete/9999", data={"todo_date": TEST_DATE})
     assert res.status_code == 302
+
+def test_add_todo_with_priority(client):
+
+    response = client.post(
+        "/add",
+        data={
+            "todo_date": "2026-06-22",
+            "content": "시험 공부하기"
+        },
+        follow_redirects=True
+    )
+
+    assert response.status_code == 200
