@@ -3,6 +3,7 @@ import sqlite3
 import os
 import calendar
 from datetime import datetime, date
+from ml.predict import predict_priority
 
 app = Flask(__name__)
 DB_PATH = os.getenv("DB_PATH", "todate.db")
@@ -22,9 +23,16 @@ def init_db():
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             todo_date TEXT NOT NULL,
             content TEXT NOT NULL,
+            priority TEXT NOT NULL DEFAULT 'medium',
             done INTEGER NOT NULL DEFAULT 0
         )
     """)
+
+    try:
+        cur.execute("ALTER TABLE todos ADD COLUMN priority TEXT NOT NULL DEFAULT 'medium'")
+    except sqlite3.OperationalError:
+        pass
+
     conn.commit()
     conn.close()
 
@@ -33,7 +41,7 @@ def get_todos(todo_date):
     conn = get_db_connection()
     cur = conn.cursor()
     cur.execute(
-        "SELECT id, content, done FROM todos WHERE todo_date = ? ORDER BY id DESC",
+        "SELECT id, content, priority, done FROM todos WHERE todo_date = ? ORDER BY id DESC",
         (todo_date,)
     )
     rows = cur.fetchall()
@@ -124,11 +132,13 @@ def add():
     content = request.form["content"].strip()
 
     if todo_date and content:
+        priority = predict_priority(content)
+
         conn = get_db_connection()
         cur = conn.cursor()
         cur.execute(
-            "INSERT INTO todos (todo_date, content, done) VALUES (?, ?, 0)",
-            (todo_date, content)
+            "INSERT INTO todos (todo_date, content, priority, done) VALUES (?, ?, ?, 0)",
+            (todo_date, content, priority)
         )
         conn.commit()
         conn.close()
