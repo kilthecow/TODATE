@@ -91,15 +91,12 @@ def test_delete_존재하지_않는_id(client):
     res = client.post("/delete/9999", data={"todo_date": TEST_DATE})
     assert res.status_code == 302
 
-def test_add_todo_with_priority(client):
+def test_add_할일_추가시_우선순위_표시(client):
+    client.post("/add", data={
+        "todo_date": TEST_DATE,
+        "content": "시험 공부하기"
+    })
 
-    response = client.post(
-        "/add",
-        data={
-            "todo_date": "2026-06-22",
-            "content": "시험 공부하기"
-        },
-        follow_redirects=True
-    )
-
-    assert response.status_code == 200
+    res = client.get(f"/?date={TEST_DATE}")
+    assert res.status_code == 200
+    assert b"high" in res.data or b"medium" in res.data or b"low" in res.data
