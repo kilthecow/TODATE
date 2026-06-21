@@ -1,0 +1,10 @@
+artifact_location: file:C:/Users/nnang/Desktop/TODATE/mlruns/853950289786138073/models/m-d75c4ed1ed614bc3a6dd2861aee0f63a/artifacts
+creation_timestamp: 1782060911192
+experiment_id: '853950289786138073'
+last_updated_timestamp: 1782060920034
+model_id: m-d75c4ed1ed614bc3a6dd2861aee0f63a
+model_type: null
+name: sklearn_model
+source_run_id: 00d587439d6a4297bb1357bdccead841
+status: 2
+status_message: null

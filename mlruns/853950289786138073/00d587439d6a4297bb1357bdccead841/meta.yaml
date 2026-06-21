@@ -1,0 +1,14 @@
+artifact_uri: file:C:/Users/nnang/Desktop/TODATE/mlruns/853950289786138073/00d587439d6a4297bb1357bdccead841/artifacts
+end_time: 1782060920038
+entry_point_name: ''
+experiment_id: '853950289786138073'
+lifecycle_stage: active
+run_id: 00d587439d6a4297bb1357bdccead841
+run_name: carefree-bug-428
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1782060911121
+status: 3
+tags: []
+user_id: ryo

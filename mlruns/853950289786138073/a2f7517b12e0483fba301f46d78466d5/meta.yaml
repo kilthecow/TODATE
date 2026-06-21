@@ -1,0 +1,14 @@
+artifact_uri: file:C:/Users/nnang/Desktop/TODATE/mlruns/853950289786138073/a2f7517b12e0483fba301f46d78466d5/artifacts
+end_time: 1782060949232
+entry_point_name: ''
+experiment_id: '853950289786138073'
+lifecycle_stage: active
+run_id: a2f7517b12e0483fba301f46d78466d5
+run_name: flawless-crow-855
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1782060940504
+status: 3
+tags: []
+user_id: ryo

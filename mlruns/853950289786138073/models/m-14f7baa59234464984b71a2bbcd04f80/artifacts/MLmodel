@@ -1,0 +1,23 @@
+artifact_path: file:C:/Users/nnang/Desktop/TODATE/mlruns/853950289786138073/models/m-14f7baa59234464984b71a2bbcd04f80/artifacts
+flavors:
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.skops
+    predict_fn: predict
+    python_version: 3.14.3
+  sklearn:
+    code: null
+    pickled_model: model.skops
+    serialization_format: skops
+    sklearn_version: 1.9.0
+    skops_trusted_types: null
+mlflow_version: 3.14.0
+model_id: m-14f7baa59234464984b71a2bbcd04f80
+model_size_bytes: 53776
+model_uuid: m-14f7baa59234464984b71a2bbcd04f80
+prompts: null
+run_id: a2f7517b12e0483fba301f46d78466d5
+utc_time_created: '2026-06-21 16:55:40.611905'

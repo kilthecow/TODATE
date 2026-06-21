@@ -1,0 +1,9 @@
+artifact_location: file:C:/Users/nnang/Desktop/TODATE/mlruns/853950289786138073
+creation_time: 1782060383342
+effective_trace_archival_retention: null
+experiment_id: '853950289786138073'
+last_update_time: 1782060383342
+lifecycle_stage: active
+name: todo-priority-classification
+trace_location: null
+workspace: default
