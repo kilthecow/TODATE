@@ -224,3 +224,23 @@ body {
     border-radius: 14px;
     padding: 20px;
 }
+
+.priority-badge {
+    padding: 3px 8px;
+    border-radius: 10px;
+    font-size: 12px;
+    margin-right: 8px;
+    font-weight: bold;
+}
+
+.priority-high {
+    background-color: #ffdddd;
+}
+
+.priority-medium {
+    background-color: #fff0c2;
+}
+
+.priority-low {
+    background-color: #ddf4ff;
+}

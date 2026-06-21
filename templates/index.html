@@ -72,6 +72,9 @@
                                 {% if todo['done'] == 1 %}
                                     <span class="completed">{{ todo['content'] }}</span>
                                 {% else %}
+                                    <span class="priority-badge priority-{{ todo['priority'] }}">
+                                    {{ todo['priority'] }}
+                                    </span>
                                     <span>{{ todo['content'] }}</span>
                                 {% endif %}
                             </div>
